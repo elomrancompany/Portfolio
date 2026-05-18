@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
@@ -13,6 +13,23 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ar_EG",
   },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: "#071B2A",
 };
 
 export default function RootLayout({

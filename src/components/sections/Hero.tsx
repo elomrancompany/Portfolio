@@ -1,6 +1,11 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { STATS } from "@/lib/data";
+
+const Scene3D = dynamic(() => import("@/components/3d/Scene3D").then((mod) => mod.Scene3D), {
+  ssr: false,
+});
 
 const STAT_ICONS: Record<string, string> = {
   building: `<path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>`,
@@ -12,8 +17,13 @@ const STAT_ICONS: Record<string, string> = {
 
 export default function Hero() {
   const counterRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const [is3DEnabled, setIs3DEnabled] = useState(true);
 
   useEffect(() => {
+    // Check if device is mobile or has low performance
+    const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
+    setIs3DEnabled(!isMobile);
+
     const timers: ReturnType<typeof setInterval>[] = [];
 
     const startCounters = () => {
@@ -48,9 +58,16 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative h-screen min-h-[700px] flex items-center overflow-hidden"
+      className="relative w-full min-h-screen md:h-screen md:min-h-[700px] flex items-center overflow-hidden pt-20 md:pt-0"
     >
-      {/* Background */}
+      {/* 3D Background */}
+      {is3DEnabled && (
+        <div className="hidden md:block">
+          <Scene3D className="absolute inset-0" />
+        </div>
+      )}
+
+      {/* Fallback Background */}
       <div
         className="hero-bg absolute inset-0 bg-cover bg-center"
         style={{
@@ -63,6 +80,130 @@ export default function Hero() {
 
       {/* Grid overlay */}
       <div className="grid-overlay absolute inset-0" />
+
+      {/* Content */}
+      <div
+        className="relative z-10 px-[6%] md:px-[6%] max-w-[700px] py-12 md:py-0"
+        style={{ animation: "fadeInUp 1.2s cubic-bezier(0.16,1,0.3,1) both" }}
+      >
+        {/* Badge */}
+        <div
+          className="inline-flex items-center gap-2 bg-[rgba(201,161,90,0.12)] border border-[rgba(201,161,90,0.3)] px-3 md:px-4 py-1 md:py-1.5 rounded-full text-xs md:text-xs font-bold text-gold tracking-widest mb-5 md:mb-7"
+          style={{
+            animation: "fadeInUp 1.2s 0.1s cubic-bezier(0.16,1,0.3,1) both",
+          }}
+        >
+          <span className="pulse-dot w-1.5 h-1.5 bg-gold rounded-full" />
+          <span className="hidden sm:inline">شركة العمران للمقاولات العامة — تأسست 2025</span>
+          <span className="sm:hidden">العمران — 2025</span>
+        </div>
+
+        {/* Headline */}
+        <h1
+          className="text-[clamp(28px,6vw,72px)] font-black leading-[1.15] text-soft-white mb-2 md:mb-3"
+          style={{
+            animation: "fadeInUp 1.2s 0.2s cubic-bezier(0.16,1,0.3,1) both",
+          }}
+        >
+          نبني المستقبل
+          <br />
+          <span className="text-gold">بثقة هندسية</span>
+          <br />
+          ومعايير تنفيذ عالمية
+        </h1>
+
+        {/* Subtitle */}
+        <p
+          className="text-[clamp(14px,2vw,19px)] text-concrete leading-[1.8] mb-8 md:mb-10 max-w-[560px]"
+          style={{
+            animation: "fadeInUp 1.2s 0.35s cubic-bezier(0.16,1,0.3,1) both",
+          }}
+        >
+          شريككم الاستراتيجي في المشروعات القومية والبنية التحتية والمقاولات
+          العامة.
+        </p>
+
+        {/* Buttons */}
+        <div
+          className="flex flex-col sm:flex-row gap-3 md:gap-4"
+          style={{
+            animation: "fadeInUp 1.2s 0.5s cubic-bezier(0.16,1,0.3,1) both",
+          }}
+        >
+          <button
+            onClick={() =>
+              document
+                .querySelector("#projects")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="bg-gold hover:bg-gold-light text-navy font-bold text-[14px] md:text-[15px] px-6 md:px-8 py-3 md:py-3.5 rounded flex items-center justify-center md:justify-start gap-2 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(201,161,90,0.4)] w-full sm:w-auto"
+          >
+            استعرض مشاريعنا
+          </button>
+          <button
+            onClick={() =>
+              document
+                .querySelector("#contact")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
+            className="bg-transparent text-soft-white border border-white/30 hover:border-gold hover:text-gold font-semibold text-[14px] md:text-[15px] px-6 md:px-8 py-3 md:py-3.5 rounded flex items-center justify-center gap-2 transition-all duration-300 hover:-translate-y-0.5 w-full sm:w-auto"
+          >
+            تواصل معنا
+          </button>
+        </div>
+      </div>
+
+      {/* Stat Cards — desktop only */}
+      <div
+        className="absolute left-[2%] md:left-[4%] top-1/2 -translate-y-1/2 z-10 hidden xl:flex flex-col gap-2 md:gap-3"
+        style={{ animation: "fadeInUp 1.2s 0.6s cubic-bezier(0.16,1,0.3,1) both" }}
+      >
+        {STATS.map((stat, i) => (
+          <div
+            key={i}
+            className="stat-card glass-card px-4 md:px-5 py-3 md:py-4 rounded-lg flex items-center gap-3 md:gap-3.5 min-w-[200px] md:min-w-[210px] relative overflow-hidden border border-[rgba(201,161,90,0.25)]"
+          >
+            {/* Gold left bar */}
+            <div className="absolute top-0 right-0 w-[3px] h-full bg-gold" />
+            {/* Icon */}
+            <div className="w-8 md:w-9 h-8 md:h-9 bg-[rgba(201,161,90,0.12)] rounded-md flex items-center justify-center flex-shrink-0">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#C9A15A"
+                strokeWidth="1.8"
+                className="w-4 md:w-5 h-4 md:h-5"
+              >
+                <g dangerouslySetInnerHTML={{ __html: STAT_ICONS[stat.icon] }} />
+              </svg>
+            </div>
+            <div>
+              <div className="text-[18px] md:text-[22px] font-black text-soft-white leading-none">
+                <span
+                  ref={(el) => {
+                    counterRefs.current[i] = el;
+                  }}
+                >
+                  0
+                </span>
+                {stat.suffix}
+                {stat.unit && (
+                  <span className="text-sm md:text-base ml-1">{stat.unit}</span>
+                )}
+              </div>
+              <div className="text-[10px] md:text-[11px] text-concrete mt-0.5">{stat.label}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-6 md:bottom-9 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 opacity-50">
+        <div className="scroll-line w-px h-10 md:h-12 bg-gradient-to-b from-gold to-transparent" />
+      </div>
+    </section>
+  );
+}
 
       {/* Content */}
       <div
