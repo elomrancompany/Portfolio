@@ -218,3 +218,5 @@ Edit these exports:
 For any changes to this website, send the full prompt at the top of this file to Claude at **claude.ai** with your specific change requests.
 
 Built with Next.js 14 + TailwindCSS + TypeScript
+#   P o r t f o l i o  
+ 
