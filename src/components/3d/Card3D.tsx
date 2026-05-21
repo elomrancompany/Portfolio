@@ -1,40 +1,86 @@
 "use client";
-import React, { useState, useRef } from "react";
+
+import React, { useState, useRef, useEffect } from "react";
 
 interface Card3DProps {
   children: React.ReactNode;
+  maxTilt?: number;
+  perspective?: number;
+  scale?: number;
+  speed?: number;
   className?: string;
-  intensity?: number;
 }
 
-export const Card3D: React.FC<Card3DProps> = ({
+export default function Card3D({
   children,
+  maxTilt = 12,
+  perspective = 1000,
+  scale = 1.02,
+  speed = 500,
   className = "",
-  intensity = 20,
-}) => {
-  const [rotateX, setRotateX] = useState(0);
-  const [rotateY, setRotateY] = useState(0);
+}: Card3DProps) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const [style, setStyle] = useState<React.CSSProperties>({
+    transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)",
+    transition: "all 0.5s cubic-bezier(0.25, 1, 0.5, 1)",
+  });
+  const [isMobile, setIsMobile] = useState(false);
+  const isMoving = useRef(false);
+
+  // Check if device is mobile/touch-only to disable hover tilt
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsMobile(
+        window.matchMedia("(max-width: 768px)").matches ||
+          "ontouchstart" in window ||
+          navigator.maxTouchPoints > 0
+      );
+    };
+    checkDevice();
+    window.addEventListener("resize", checkDevice);
+    return () => window.removeEventListener("resize", checkDevice);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
+    if (isMobile || !cardRef.current) return;
 
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const mouseX = e.clientX - rect.left - centerX;
-    const mouseY = e.clientY - rect.top - centerY;
+    // Use requestAnimationFrame for performance throttling
+    if (!isMoving.current) {
+      isMoving.current = true;
+      requestAnimationFrame(() => {
+        const card = cardRef.current;
+        if (!card) {
+          isMoving.current = false;
+          return;
+        }
 
-    const rotationX = (mouseY / centerY) * intensity;
-    const rotationY = -(mouseX / centerX) * intensity;
+        const rect = card.getBoundingClientRect();
+        const width = rect.width;
+        const height = rect.height;
 
-    setRotateX(rotationX);
-    setRotateY(rotationY);
+        // Mouse position relative to the element (from center)
+        const mouseX = e.clientX - rect.left - width / 2;
+        const mouseY = e.clientY - rect.top - height / 2;
+
+        // Calculate rotation angles (invert Y axis for correct tilting sensation)
+        const tiltX = (-(mouseY / (height / 2)) * maxTilt).toFixed(2);
+        const tiltY = ((mouseX / (width / 2)) * maxTilt).toFixed(2);
+
+        setStyle({
+          transform: `perspective(${perspective}px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(${scale}, ${scale}, ${scale})`,
+          transition: "transform 0.1s cubic-bezier(0.25, 1, 0.5, 1)",
+        });
+        isMoving.current = false;
+      });
+    }
   };
 
   const handleMouseLeave = () => {
-    setRotateX(0);
-    setRotateY(0);
+    if (isMobile) return;
+    setStyle({
+      transform: `perspective(${perspective}px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`,
+      transition: `transform ${speed}ms cubic-bezier(0.25, 1, 0.5, 1)`,
+    });
   };
 
   return (
@@ -42,22 +88,10 @@ export const Card3D: React.FC<Card3DProps> = ({
       ref={cardRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`transition-transform duration-300 ${className}`}
-      style={{
-        transformStyle: "preserve-3d",
-        transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-      }}
+      style={style}
+      className={`gpu-accelerate preserve-3d ${className}`}
     >
-      <div
-        style={{
-          transformStyle: "preserve-3d",
-          transform: "translateZ(20px)",
-        }}
-      >
-        {children}
-      </div>
+      {children}
     </div>
   );
-};
-
-export default Card3D;
+}

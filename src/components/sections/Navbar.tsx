@@ -1,108 +1,197 @@
 "use client";
-import { useState, useEffect } from "react";
-import { NAV_LINKS, SITE } from "@/lib/data";
+
+import React, { useState, useEffect } from "react";
 import Logo from "@/components/ui/Logo";
+import { NAV_LINKS, SITE } from "@/lib/data";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
+  // Handle scroll properties (background change)
   useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handler);
-    return () => window.removeEventListener("scroll", handler);
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleNav = (href: string) => {
-    setMenuOpen(false);
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  // Active section spy
+  useEffect(() => {
+    const handleScrollSpy = () => {
+      const sections = NAV_LINKS.map(link => link.href.substring(1));
+      let currentSection = "";
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          // If the top of the section is within the top 40% of viewport
+          if (rect.top <= window.innerHeight * 0.4) {
+            currentSection = `#${section}`;
+          }
+        }
+      }
+
+      // Default to first if near top
+      if (window.scrollY < 200) {
+        currentSection = NAV_LINKS[0].href;
+      }
+
+      if (currentSection) {
+        setActiveSection(currentSection);
+      }
+    };
+
+    window.addEventListener("scroll", handleScrollSpy);
+    handleScrollSpy(); // run once on load
+    return () => window.removeEventListener("scroll", handleScrollSpy);
+  }, []);
+
+  // Lock scroll when mobile menu is open
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMobileMenuOpen]);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleLinkClick = (href: string) => {
+    setIsMobileMenuOpen(false);
+    const element = document.getElementById(href.substring(1));
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
-    <>
-      <nav
-        className={`fixed top-0 right-0 left-0 z-50 flex items-center justify-between px-[5%] transition-all duration-400 ${
-          scrolled
-            ? "h-[68px] bg-navy/97 backdrop-blur-xl border-b border-[rgba(201,161,90,0.15)]"
-            : "h-[80px] bg-transparent"
-        }`}
-      >
-        <Logo />
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled
+          ? "py-3 bg-navy/90 backdrop-blur-xl border-b border-gold/10 shadow-lg"
+          : "py-5 bg-transparent border-b border-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          {/* Logo - RTL (Left side of layout, right side in standard flex-row-reverse) */}
+          <Logo />
 
-        {/* Desktop Links */}
-        <ul className="hidden lg:flex items-center gap-9 list-none">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
+          {/* Desktop Navigation Link Items */}
+          <nav className="hidden md:flex items-center gap-8">
+            {NAV_LINKS.map((link) => (
               <button
-                onClick={() => handleNav(link.href)}
-                className="nav-link-underline relative text-soft-white/75 hover:text-soft-white text-sm font-medium transition-colors duration-300"
+                key={link.href}
+                onClick={() => handleLinkClick(link.href)}
+                className={`nav-link text-sm font-medium tracking-wide ${
+                  activeSection === link.href ? "active text-gold" : "text-cream/90"
+                }`}
               >
                 {link.label}
               </button>
-            </li>
-          ))}
-          <li>
-            <button
-              onClick={() => handleNav("#contact")}
-              className="bg-gold hover:bg-gold-light text-navy font-bold text-sm px-6 py-2.5 rounded transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(201,161,90,0.35)]"
-            >
-              طلب عرض سعر
-            </button>
-          </li>
-        </ul>
+            ))}
+          </nav>
 
-        {/* Hamburger */}
-        <button
-          className="lg:hidden flex flex-col gap-[5px] p-1 cursor-pointer"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <span
-            className={`w-6 h-0.5 bg-soft-white block transition-all duration-300 ${
-              menuOpen ? "rotate-45 translate-y-[7px]" : ""
-            }`}
-          />
-          <span
-            className={`w-6 h-0.5 bg-soft-white block transition-all duration-300 ${
-              menuOpen ? "opacity-0" : ""
-            }`}
-          />
-          <span
-            className={`w-6 h-0.5 bg-soft-white block transition-all duration-300 ${
-              menuOpen ? "-rotate-45 -translate-y-[7px]" : ""
-            }`}
-          />
-        </button>
-      </nav>
-
-      {/* Mobile Menu */}
-      <div
-        className={`fixed top-[68px] right-0 left-0 z-40 bg-navy/98 backdrop-blur-xl border-b border-[rgba(201,161,90,0.2)] transition-all duration-300 ${
-          menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
-      >
-        <ul className="flex flex-col list-none p-6 gap-4">
-          {NAV_LINKS.map((link) => (
-            <li key={link.href}>
-              <button
-                onClick={() => handleNav(link.href)}
-                className="text-soft-white/80 hover:text-gold text-base font-semibold transition-colors w-full text-right py-2 border-b border-[rgba(201,161,90,0.1)]"
-              >
-                {link.label}
-              </button>
-            </li>
-          ))}
-          <li>
-            <button
-              onClick={() => handleNav("#contact")}
-              className="w-full bg-gold text-navy font-bold text-base py-3 rounded mt-2"
+          {/* Call to Action Button */}
+          <div className="hidden md:block">
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick("#contact");
+              }}
+              className="btn-gold !py-2.5 !px-5 text-sm"
             >
-              طلب عرض سعر
-            </button>
-          </li>
-        </ul>
+              طلب استشارة
+            </a>
+          </div>
+
+          {/* Mobile Menu Toggle Button */}
+          <button
+            onClick={toggleMobileMenu}
+            className="md:hidden flex items-center justify-center p-2 rounded-lg text-cream hover:text-gold hover:bg-white/5 transition-all duration-300"
+            aria-label="Toggle navigation menu"
+          >
+            <div className="w-6 h-5 relative flex flex-col justify-between">
+              <span
+                className={`w-full h-0.5 bg-current rounded transition-all duration-300 ${
+                  isMobileMenuOpen ? "rotate-45 translate-y-[9px]" : ""
+                }`}
+              />
+              <span
+                className={`w-full h-0.5 bg-current rounded transition-all duration-300 ${
+                  isMobileMenuOpen ? "opacity-0" : ""
+                }`}
+              />
+              <span
+                className={`w-full h-0.5 bg-current rounded transition-all duration-300 ${
+                  isMobileMenuOpen ? "-rotate-45 -translate-y-[9px]" : ""
+                }`}
+              />
+            </div>
+          </button>
+        </div>
       </div>
-    </>
+
+      {/* Mobile Navigation Full Screen Overlay */}
+      <div
+        className={`fixed inset-0 top-[60px] bg-navy/98 backdrop-blur-2xl z-40 transition-all duration-500 md:hidden ${
+          isMobileMenuOpen
+            ? "opacity-100 translate-x-0"
+            : "opacity-0 translate-x-full pointer-events-none"
+        }`}
+      >
+        <div className="flex flex-col h-full justify-between p-8">
+          <nav className="flex flex-col gap-6 text-right mt-8">
+            {NAV_LINKS.map((link) => (
+              <button
+                key={link.href}
+                onClick={() => handleLinkClick(link.href)}
+                className={`text-xl font-bold tracking-wide py-2 text-right transition-colors duration-300 ${
+                  activeSection === link.href ? "text-gold border-r-2 border-gold pr-3" : "text-cream hover:text-gold"
+                }`}
+              >
+                {link.label}
+              </button>
+            ))}
+          </nav>
+
+          {/* Mobile CTA and contact info */}
+          <div className="flex flex-col gap-6 mb-12 border-t border-gold/10 pt-6">
+            <a
+              href={`tel:${SITE.phone}`}
+              className="text-center font-bold text-cream hover:text-gold text-lg transition-colors"
+            >
+              {SITE.phoneFormatted}
+            </a>
+            <a
+              href="#contact"
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick("#contact");
+              }}
+              className="btn-gold w-full text-center"
+            >
+              تواصل معنا الآن
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
   );
 }

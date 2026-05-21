@@ -1,3 +1,2 @@
-export { Scene3D as default } from "./Scene3D";
-export { Card3D } from "./Card3D";
-export { Orb3D } from "./Orb3D";
+export { default as Scene3D } from "./Scene3D";
+export { default as Card3D } from "./Card3D";

@@ -1,57 +1,103 @@
 import type { Metadata, Viewport } from "next";
-import "../styles/globals.css";
+import "@/styles/globals.css";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export const metadata: Metadata = {
-  title: "شركة العمران للمقاولات العامة | EL OMRAN General Contracting",
-  description:
-    "شريككم الاستراتيجي في المشروعات القومية والبنية التحتية والمقاولات العامة. نبني المستقبل بثقة هندسية ومعايير تنفيذ عالمية.",
-  keywords:
-    "مقاولات, بنية تحتية, خرسانات مسلحة, استصلاح زراعي, مقاولات عامة, مصر, EL OMRAN",
+  title: "شركة العمران للمقاولات العامة | شريككم الاستراتيجي",
+  description: "شركة العمران للمقاولات العامة - نبني اليوم لمستقبل مستدام. متخصصون في أعمال البنية التحتية، محطات رفع المياه والكهرباء، الخرسانات المسلحة، والاستصلاح الزراعي.",
+  keywords: [
+    "العمران للمقاولات",
+    "شركة العمران للمقاولات العامة",
+    "مقاولات عامة مصر",
+    "بنية تحتية مصر",
+    "محطات مياه وكهرباء",
+    "استصلاح زراعي مصر",
+    "مستقبل مصر",
+    "السعود جروب",
+    "شركة كونكورد للمقاولات"
+  ],
+  authors: [{ name: "فريق العمران" }],
+  metadataBase: new URL("https://www.elomraneg.com"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "شركة العمران للمقاولات العامة",
-    description: "شريككم الاستراتيجي في المشروعات القومية والبنية التحتية",
-    type: "website",
+    title: "شركة العمران للمقاولات العامة | شريككم الاستراتيجي",
+    description: "نبني اليوم لمستقبل مستدام. أعمال بنية تحتية ومقاولات عامة بمواصفات قياسية وجودة هندسية موثوقة.",
+    url: "https://www.elomraneg.com",
+    siteName: "العمران للمقاولات",
     locale: "ar_EG",
+    type: "website",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=80",
+        width: 1200,
+        height: 630,
+        alt: "شركة العمران للمقاولات العامة",
+      },
+    ],
   },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-  },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+  twitter: {
+    card: "summary_large_image",
+    title: "شركة العمران للمقاولات العامة",
+    description: "نبني اليوم لمستقبل مستدام. أعمال بنية تحتية ومقاولات عامة بمواصفات قياسية.",
+    images: ["https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=80"],
   },
 };
 
 export const viewport: Viewport = {
+  themeColor: "#0D1B2A",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  userScalable: true,
-  themeColor: "#071B2A",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
+  const schemaData = {
+    "@context": "https://schema.org",
+    "@type": "GovernmentContractor",
+    "name": "شركة العمران للمقاولات العامة",
+    "alternateName": "EL OMRAN General Contracting",
+    "description": "نبني اليوم لمستقبل مستدام. شريككم الاستراتيجي في المشروعات الكبرى.",
+    "url": "https://www.elomraneg.com",
+    "logo": "https://www.elomraneg.com/logo.png",
+    "foundingDate": "2025",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "القاهرة",
+      "addressCountry": "EG"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+201153895074",
+      "contactType": "sales",
+      "email": "elomrancompanyegy@gmail.com",
+      "areaServed": "EG",
+      "availableLanguage": ["Arabic", "English"]
+    },
+    "sameAs": [
+      "https://web.facebook.com/profile.php?id=61589768965958",
+      "https://www.instagram.com/elomranegy/"
+    ]
+  };
+
   return (
     <html lang="ar" dir="rtl">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap"
-          rel="stylesheet"
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
       </head>
-      <body className="font-cairo antialiased">{children}</body>
+      <body className="antialiased min-h-screen">
+        <ErrorBoundary>
+          {children}
+        </ErrorBoundary>
+      </body>
     </html>
   );
 }

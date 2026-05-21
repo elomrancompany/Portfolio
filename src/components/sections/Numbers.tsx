@@ -1,38 +1,50 @@
 "use client";
 
+import React from "react";
+import ScrollReveal from "@/components/ui/ScrollReveal";
+import CountUpStat from "@/components/ui/CountUpStat";
+import { STATS } from "@/lib/data";
+
 export default function Numbers() {
   return (
-    <section id="numbers" className="section-padding bg-graphite text-center">
-      <div className="text-[11px] font-bold tracking-[3px] text-gold uppercase mb-4">
-        إنجازاتنا بالأرقام
-      </div>
-      <h2 className="text-[clamp(28px,4vw,48px)] font-black leading-[1.2] text-soft-white">
-        أرقام تتحدث
-        <br />
-        <span className="text-gold">عن حجم إنجازاتنا</span>
-      </h2>
+    <section id="numbers" className="section-padding bg-navy-mid/10 relative overflow-hidden border-y border-gold/10">
+      {/* Background accent glow */}
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 border border-[rgba(201,161,90,0.15)] rounded-lg overflow-hidden mt-14">
-        {[
-          { val: "+22,000", unit: "م²", label: "إجمالي مساحات منفذة" },
-          { val: "+180", unit: "", label: "قاعدة خرسانية منفذة" },
-          { val: "400K", unit: "", label: "فدان استصلاح زراعي" },
-          { val: "+4", unit: "", label: "مشاريع منجزة ونشطة" },
-        ].map((item, i) => (
-          <div
-            key={i}
-            className="py-12 px-8 bg-navy/50 hover:bg-[rgba(201,161,90,0.05)] transition-colors border-l border-[rgba(201,161,90,0.1)] first:border-l-0"
-          >
-            <div className="text-[clamp(36px,5vw,64px)] font-black text-gold leading-none">
-              {item.val}
-              {item.unit && (
-                <span className="text-xl text-gold-dark mr-1">{item.unit}</span>
-              )}
-            </div>
-            <div className="w-8 h-0.5 bg-gold mx-auto my-3" />
-            <div className="text-sm text-concrete font-medium">{item.label}</div>
-          </div>
-        ))}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <ScrollReveal direction="up" className="flex flex-col items-center">
+          <span className="section-label mb-2">إنجازاتنا بالأرقام</span>
+          <h2 className="section-title text-white">
+            كفاءة تعكسها
+            <span className="text-gradient-gold"> الأرقام والمؤشرات</span>
+          </h2>
+          <p className="section-subtitle mt-2 text-cream/70 text-base max-w-xl">
+            نثق بقدراتنا، وتترجم أرقامنا حجم التزامنا وجودة مخرجاتنا الهندسية والإنشائية على أرض الواقع.
+          </p>
+        </ScrollReveal>
+
+        {/* Counter Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mt-12 sm:mt-16">
+          {STATS.map((stat, i) => (
+            <ScrollReveal
+              key={i}
+              direction="scale"
+              delay={i * 0.1}
+              className="h-full"
+            >
+              <CountUpStat
+                end={stat.value}
+                suffix={stat.suffix}
+                prefix={stat.icon === "map" ? "" : ""}
+                decimals={0}
+                duration={2.2}
+                label={stat.label}
+                subLabel={stat.subLabel}
+                className="h-full border border-gold/15 hover:border-gold/45 shadow-deep bg-navy/85 hover:bg-navy-mid/20 transition-all duration-300 transform"
+              />
+            </ScrollReveal>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -10,22 +10,25 @@ const config: Config = {
     extend: {
       colors: {
         navy: {
-          DEFAULT: "#071B2A",
-          light: "#0D2B40",
-          mid: "#0A2236",
+          DEFAULT: "#0D1B2A",
+          light: "#1A3A5C",
+          mid: "#415068",
         },
         gold: {
-          DEFAULT: "#C9A15A",
-          light: "#DDB96A",
-          dark: "#A8823D",
+          DEFAULT: "#C49A5A",
+          light: "#D4B07A",
+          dark: "#A07D3A",
         },
-        graphite: "#1C1F26",
-        concrete: "#B9BEC7",
-        "soft-white": "#F6F7F9",
+        cream: "#E6E8EC",
       },
       fontFamily: {
-        cairo: ["var(--font-cairo)", "Cairo", "sans-serif"],
-        tajawal: ["var(--font-tajawal)", "Tajawal", "sans-serif"],
+        primary: [
+          '"DIN Next Arabic"',
+          '"Tahoma"',
+          '"Segoe UI"',
+          "sans-serif",
+        ],
+        heading: ['"DIN Next Arabic"', '"Tahoma"', "sans-serif"],
       },
       animation: {
         "hero-zoom": "heroZoom 20s ease-in-out infinite alternate",
@@ -34,6 +37,14 @@ const config: Config = {
         "scroll-down": "scrollDown 2s ease-in-out infinite",
         "gold-sweep": "goldSweep 3s ease-in-out infinite",
         pulse: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "fade-in-up": "fadeInUp 0.7s ease-out forwards",
+        "fade-in-left": "fadeInLeft 0.7s ease-out forwards",
+        "fade-in-right": "fadeInRight 0.7s ease-out forwards",
+        "scale-in": "scaleIn 0.5s ease-out forwards",
+        "slide-up": "slideUp 0.6s ease-out forwards",
+        shimmer: "shimmer 2.5s linear infinite",
+        float: "float 6s ease-in-out infinite",
+        marquee: "marquee 30s linear infinite",
       },
       keyframes: {
         heroZoom: {
@@ -58,12 +69,44 @@ const config: Config = {
           "0%": { backgroundPosition: "-200% center" },
           "100%": { backgroundPosition: "200% center" },
         },
+        fadeInUp: {
+          from: { opacity: "0", transform: "translateY(40px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        fadeInLeft: {
+          from: { opacity: "0", transform: "translateX(40px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
+        },
+        fadeInRight: {
+          from: { opacity: "0", transform: "translateX(-40px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
+        },
+        scaleIn: {
+          from: { opacity: "0", transform: "scale(0.85)" },
+          to: { opacity: "1", transform: "scale(1)" },
+        },
+        slideUp: {
+          from: { opacity: "0", transform: "translateY(20px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% center" },
+          "100%": { backgroundPosition: "200% center" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-12px)" },
+        },
+        marquee: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
       },
       backgroundImage: {
         "gold-gradient":
-          "linear-gradient(135deg, #C9A15A 0%, #DDB96A 50%, #A8823D 100%)",
+          "linear-gradient(135deg, #C49A5A 0%, #D4B07A 50%, #A07D3A 100%)",
         "navy-gradient":
-          "linear-gradient(135deg, #071B2A 0%, #0D2B40 100%)",
+          "linear-gradient(135deg, #0D1B2A 0%, #1A3A5C 100%)",
       },
     },
   },
