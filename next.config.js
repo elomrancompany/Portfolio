@@ -21,11 +21,6 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
 
-  // Internationalization support
-  i18n: {
-    locales: ["ar", "en"],
-    defaultLocale: "ar",
-  },
 
   // Production optimizations for Vercel
   experimental: {
@@ -116,7 +111,16 @@ const nextConfig = {
   // Rewrites for API routing if needed
   async rewrites() {
     return {
-      beforeFiles: [],
+      beforeFiles: [
+        {
+          source: "/en",
+          destination: "/",
+        },
+        {
+          source: "/en/:path*",
+          destination: "/:path*",
+        },
+      ],
       afterFiles: [],
       fallback: [],
     };
