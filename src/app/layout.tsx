@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=80",
+        url: "/images/projects/concrete-night.jpg",
         width: 1200,
         height: 630,
         alt: "شركة العمران للمقاولات العامة",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "شركة العمران للمقاولات العامة",
     description: "نبني اليوم لمستقبل مستدام. أعمال بنية تحتية ومقاولات عامة بمواصفات قياسية.",
-    images: ["https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1200&q=80"],
+    images: ["/images/projects/concrete-night.jpg"],
   },
 };
 

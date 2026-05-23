@@ -720,3 +720,397 @@
     backdrop-filter: none;
   }
 }
+
+/* ─── Enhanced UI/UX: Image Rendering ─── */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* ─── Enhanced UI/UX: Page Fade-In ─── */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+main, #__next > div {
+  animation: pageFadeIn 0.6s ease forwards;
+}
+
+/* ─── Enhanced UI/UX: Shimmer animation for loading ─── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+/* ─── Enhanced UI/UX: Pulse dot for live status ─── */
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(1.4); }
+}
+
+.pulse-dot {
+  animation: pulseDot 1.8s ease-in-out infinite;
+}
+
+/* ─── Enhanced UI/UX: Gold glow on focus ─── */
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ─── Enhanced UI/UX: Better mobile touch targets ─── */
+@media (max-width: 768px) {
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .btn-gold, .btn-outline {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 14px;
+  }
+
+  .section-padding {
+    padding: 3.5rem 1rem;
+  }
+
+  .nav-link {
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+  }
+
+  /* Ensure project cards are readable on small screens */
+  .project-card .project-metrics {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+
+  /* Service cards always show description on mobile */
+  .service-card .service-desc {
+    opacity: 1 !important;
+    max-height: 80px !important;
+  }
+
+  .service-card .service-line {
+    width: 40px !important;
+  }
+}
+
+/* ─── Enhanced UI/UX: Improved card shadows ─── */
+.project-card {
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    0 1px 0 rgba(196, 154, 90, 0.06) inset;
+}
+
+.project-card:hover {
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(196, 154, 90, 0.2),
+    0 1px 0 rgba(196, 154, 90, 0.1) inset;
+}
+
+.service-card {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+.service-card:hover {
+  box-shadow:
+    0 16px 50px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(196, 154, 90, 0.18);
+}
+
+/* ─── Enhanced UI/UX: Better why-us card on mobile ─── */
+@media (max-width: 640px) {
+  .why-card {
+    padding: 1.5rem;
+  }
+}
+
+/* ─── Enhanced UI/UX: Section header spacing ─── */
+@media (max-width: 640px) {
+  .section-title {
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
+  }
+}
+
+/* ─── Enhanced UI/UX: Stat card hover glow ─── */
+.stat-card:hover {
+  box-shadow: 0 0 30px rgba(196, 154, 90, 0.12), 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* ─── Enhanced UI/UX: Gold gradient background for backgrounds ─── */
+.bg-gold-gradient {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+}
+
+/* ─── Enhanced UI/UX: Smooth image transition ─── */
+.project-card img,
+.service-card .service-bg {
+  transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              filter 0.5s ease;
+}
+
+/* ─── Enhanced UI/UX: Better text contrast in cards ─── */
+.project-card h3,
+.service-card h3 {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ─── Enhanced UI/UX: Responsive grid gaps ─── */
+@media (max-width: 480px) {
+  .grid {
+    gap: 1rem;
+  }
+}
+
+/* ─── Enhanced UI/UX: Gold border accent on active state ─── */
+.nav-link.active {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* ─── Enhanced UI/UX: Footer hover links ─── */
+footer a:hover,
+footer button:hover {
+  color: var(--gold);
+  transform: translateX(-2px);
+  transition: all 0.25s ease;
+}
+
+/* ─── Enhanced UI/UX: Contact form improvements ─── */
+.form-input {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.form-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(196, 154, 90, 0.12), 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ─── Enhanced UI/UX: Process step connector line ─── */
+@media (min-width: 768px) {
+  .process-step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 28px;
+    left: -50%;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(196, 154, 90, 0.3), transparent);
+  }
+  .process-step {
+    position: relative;
+  }
+}
+
+/* ─── Enhanced UI/UX: Glassmorphism badge ─── */
+.glass-badge {
+  background: rgba(13, 27, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(196, 154, 90, 0.25);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+/* ─── Enhanced UI/UX: Smooth scroll offset for fixed header ─── */
+[id] {
+  scroll-margin-top: 80px;
+}
+
+/* ─── Enhanced UI/UX: Better responsive images in project cards ─── */
+.project-card .relative.overflow-hidden {
+  overflow: hidden;
+}
+
+/* ─── Enhanced UI/UX: Hero stats responsive ─── */
+@media (max-width: 639px) {
+  .stat-card {
+    min-width: unset !important;
+    width: 100%;
+  }
+}
+
+/* ─── Enhanced UI/UX: Typography scale for Arabic ─── */
+@media (max-width: 768px) {
+  h1 { font-size: clamp(2rem, 8vw, 3.5rem); }
+  h2 { font-size: clamp(1.5rem, 6vw, 2.5rem); }
+  h3 { font-size: clamp(1.1rem, 4vw, 1.75rem); }
+}
+
+/* ─── Enhanced UI/UX: Gold line decoration ─── */
+.gold-divider {
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 2px;
+  margin: 0.75rem 0;
+}
+
+/* ─── Enhanced UI/UX: Navbar CTA button on mobile ─── */
+@media (max-width: 767px) {
+  .mobile-cta {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   PREMIUM TIER 1 ENHANCEMENTS — El Omran 2025
+   ══════════════════════════════════════════════ */
+
+/* ─── Site-wide fixed construction background ─── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url('/images/projects/concrete-night.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  z-index: -10;
+  transform: scale(1.04);
+}
+
+/* Dark overlay on body for all sections outside hero */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 27, 42, 0.93);
+  z-index: -9;
+}
+
+/* Hero section overrides — it manages its own background */
+#hero {
+  isolation: isolate;
+}
+
+/* ─── Premium glassmorphism card ─── */
+.glass-premium {
+  background: rgba(13, 27, 42, 0.72) !important;
+  backdrop-filter: blur(28px) saturate(1.4) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(1.4) !important;
+  border: 1px solid rgba(196, 154, 90, 0.14) !important;
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(196, 154, 90, 0.08) !important;
+}
+
+/* ─── Gold glow gradient (reusable) ─── */
+.bg-gold-gradient {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+}
+
+/* ─── Section backgrounds become translucent so BG shows through ─── */
+.bg-navy {
+  background-color: rgba(13, 27, 42, 0.88) !important;
+}
+
+.bg-navy-mid\/10 {
+  background-color: rgba(65, 80, 104, 0.12) !important;
+}
+
+/* ─── Enhanced service card hover line ─── */
+.service-card:hover .service-line {
+  width: 80px !important;
+}
+
+/* ─── Animated gold underline for section labels ─── */
+@keyframes goldSlideIn {
+  from { width: 0; opacity: 0; }
+  to   { width: 24px; opacity: 1; }
+}
+
+.section-label::before {
+  animation: goldSlideIn 0.6s ease-out forwards;
+}
+
+/* ─── Project card metrics always visible on mobile ─── */
+@media (max-width: 1023px) {
+  .project-card .project-metrics {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+}
+
+/* ─── Better text shadows for card headings ─── */
+.project-card h3,
+.service-card h3 {
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+}
+
+/* ─── Responsive grid auto-repair (handles removed sections gracefully) ─── */
+.services-grid,
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ─── Ultra-wide screen cap ─── */
+@media (min-width: 1920px) {
+  .container-custom,
+  .max-w-7xl {
+    max-width: 1400px;
+  }
+}
+
+/* ─── Gold text selection ─── */
+::selection {
+  background: rgba(196, 154, 90, 0.28);
+  color: var(--white);
+}
+
+/* ─── Premium number counter style ─── */
+.stat-card .stat-value {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 60%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ─── Why-us card elevated hover ─── */
+.why-card:hover {
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 0 1px rgba(196,154,90,0.18);
+}
+
+/* ─── RTL-aware transition for hover offsets ─── */
+[dir="rtl"] .quality-item:hover {
+  transform: translateX(4px);
+}
+
+/* ─── Input glow on focus ─── */
+.form-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(196,154,90,0.14), 0 4px 16px rgba(0,0,0,0.18);
+  background: rgba(65,80,104,0.22);
+}
+
+/* ─── Subtle gold shimmer on h1 ─── */
+@keyframes goldBorderPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(196,154,90,0); }
+  50%       { box-shadow: 0 0 0 6px rgba(196,154,90,0.08); }
+}
+
+.btn-gold {
+  animation: goldBorderPulse 3s ease-in-out infinite;
+}
+
+/* ─── Nav backdrop enhanced ─── */
+header.scrolled-nav {
+  background: rgba(13,27,42,0.94) !important;
+  backdrop-filter: blur(28px) !important;
+}
+
+/* ─── Smooth section transitions ─── */
+section {
+  position: relative;
+  z-index: 1;
+}

@@ -71,7 +71,7 @@ export default function Quality() {
         <ScrollReveal direction="left" className="relative">
           <div className="relative rounded-2xl overflow-hidden aspect-square group border border-gold/15 shadow-2xl">
             <Image
-              src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&q=80"
+              src="/images/projects/pipe-crane.jpg"
               alt="معايير السلامة والجودة بموقع العمران للمقاولات"
               fill
               sizes="(max-width: 768px) 100vw, 50vw"

@@ -35,7 +35,8 @@ export default function About() {
   return (
     <section
       id="about"
-      className="section-padding bg-navy relative overflow-hidden"
+      className="section-padding relative overflow-hidden"
+      style={{ background: "rgba(13,27,42,0.90)" }}
     >
       {/* Background radial highlight */}
       <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[400px] h-[400px] bg-gold/5 rounded-full blur-[120px] pointer-events-none" />
@@ -45,7 +46,7 @@ export default function About() {
         <ScrollReveal direction="left" className="relative order-2 lg:order-1">
           <div className="relative rounded-2xl overflow-hidden aspect-[4/5] group border border-gold/15">
             <Image
-              src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=900&q=80"
+              src="/images/projects/construction-site.jpg"
               alt="العمران للمقاولات العامة والإنشاءات الكبرى"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
